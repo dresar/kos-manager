@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kos Manager - Property Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #f1c40f;
+        }
+
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: #3498db;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .status-terisi {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .status-menunggak {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .status-kosong {
+            color: #95a5a6;
+            font-weight: bold;
+        }
+
+        .status-lunas {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .status-belum-lunas {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2c3e50;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Kos Manager</h1>
+            <p>Property Management System for Boarding Houses</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-title">Total Rooms</div>
+                <div class="card-value" id="total-rooms">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Occupied Rooms</div>
+                <div class="card-value" id="occupied-rooms">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Monthly Income</div>
+                <div class="card-value" id="monthly-income">Rp0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Balance</div>
+                <div class="card-value" id="balance">Rp0</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="rooms">Rooms</button>
+            <button class="tab-button" data-tab="tenants">Tenants</button>
+            <button class="tab-button" data-tab="billing">Billing</button>
+            <button class="tab-button" data-tab="transactions">Transactions</button>
+        </div>
+
+        <div id="rooms-tab" class="tab-content active">
+            <h3>Room Management</h3>
+            <div class="form-group">
+                <input type="text" id="room-id" placeholder="Room ID (e.g., 101)">
+            </div>
+            <div class="form-group">
+                <input type="number" id="room-rent" placeholder="Monthly Rent (Rp)">
+            </div>
+            <div class="form-group">
+                <select id="room-status">
+                    <option value="KOSONG">Kosong</option>
+                    <option value="TERISI">Terisi</option>
+                    <option value="MENUNGGAK">Menunggak</option>
+                </select>
+            </div>
+            <button onclick="saveRoom()">Save Room</button>
+            <button onclick="loadRoomsTable()" class="btn-warning">Refresh Rooms</button>
+            <div id="rooms-table-container"></div>
+        </div>
+
+        <div id="tenants-tab" class="tab-content">
+            <h3>Tenant Management</h3>
+            <div class="form-group">
+                <input type="text" id="tenant-id" placeholder="Tenant ID">
+            </div>
+            <div class="form-group">
+                <input type="text" id="tenant-name" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <input type="tel" id="tenant-phone" placeholder="Phone Number">
+            </div>
+            <div class="form-group">
+                <input type="email" id="tenant-email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <select id="tenant-payment-status">
+                    <option value="LUNAS">Lunas</option>
+                    <option value="BELUM LUNAS">Belum Lunas</option>
+                </select>
+            </div>
+            <button onclick="saveTenant()">Save Tenant</button>
+            <button onclick="loadTenantsTable()" class="btn-warning">Refresh Tenants</button>
+            <div id="tenants-table-container"></div>
+        </div>
+
+        <div id="billing-tab" class="tab-content">
+            <h3>Billing & Reminders</h3>
+            <div class="form-group">
+                <select id="billing-room-select">
+                    <option value="">Select Room</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" id="billing-amount" placeholder="Amount (Rp)">
+            </div>
+            <button onclick="generateWaReminder()">Generate WhatsApp Reminder</button>
+            <button onclick="openAIAdvisor()" style="background: #9b59b6;">AI Financial Advisor</button>
+            <div id="billing-result" style="margin-top: 20px;"></div>
+        </div>
+
+        <div id="transactions-tab" class="tab-content">
+            <h3>Financial Transactions</h3>
+            <div class="form-group">
+                <select id="transaction-type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" id="transaction-amount" placeholder="Amount (Rp)">
+            </div>
+            <div class="form-group">
+                <input type="text" id="transaction-category" placeholder="Category (e.g., Rent, Maintenance)">
+            </div>
+            <div class="form-group">
+                <textarea id="transaction-notes" placeholder="Notes"></textarea>
+            </div>
+            <button onclick="recordTransaction()">Record Transaction</button>
+            <button onclick="loadTransactionsTable()" class="btn-warning">Refresh Transactions</button>
+            <div id="transactions-table-container"></div>
+        </div>
+    </div>
+
+    <div id="ai-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('ai-modal')">Close</button>
+            <h3>AI Financial Advisor</h3>
+            <div id="ai-advisor-result"></div>
+        </div>
+    </div>
+
+    <div id="loading" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px;">Processing...</p>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

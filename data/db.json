@@ -1,0 +1,27 @@
+{
+  "settings": {
+    "kosName": "Kost Graha Asri Residence",
+    "ownerName": "Eka Syarif Maulana",
+    "paymentAccount": "BCA 123456789 a/n Eka Syarif",
+    "currency": "IDR"
+  },
+  "rooms": [
+    { "id": "R01", "name": "Kamar 101 (Lt. 1)", "type": "AC + Kamar Mandi Dalam", "price": 1500000, "status": "TERISI", "tenantName": "Aditya Pratama", "tenantPhone": "6281234567890", "dueDate": 10 },
+    { "id": "R02", "name": "Kamar 102 (Lt. 1)", "type": "AC + Kamar Mandi Dalam", "price": 1500000, "status": "MENUNGGAK", "tenantName": "Bima Wicaksono", "tenantPhone": "6281987654321", "dueDate": 5 },
+    { "id": "R03", "name": "Kamar 103 (Lt. 1)", "type": "Non-AC / Kipas Angin", "price": 900000, "status": "KOSONG", "tenantName": "-", "tenantPhone": "-", "dueDate": 1 },
+    { "id": "R04", "name": "Kamar 201 (Lt. 2)", "type": "VIP Balkon + Water Heater", "price": 1800000, "status": "TERISI", "tenantName": "Citra Lestari", "tenantPhone": "6285712345678", "dueDate": 15 },
+    { "id": "R05", "name": "Kamar 202 (Lt. 2)", "type": "AC + Kamar Mandi Luar", "price": 1200000, "status": "TERISI", "tenantName": "Dian Kurniawan", "tenantPhone": "6287765432109", "dueDate": 20 }
+  ],
+  "transactions": [
+    { "id": "TX-001", "date": "2026-10-01", "type": "PEMASUKAN", "category": "Sewa Kamar", "amount": 1500000, "description": "Sewa Okt - Aditya (Kamar 101)" },
+    { "id": "TX-002", "date": "2026-10-02", "type": "PEMASUKAN", "category": "Sewa Kamar", "amount": 1800000, "description": "Sewa Okt - Citra (Kamar 201)" },
+    { "id": "TX-003", "date": "2026-10-03", "type": "PENGELUARAN", "category": "Listrik & Token", "amount": 450000, "description": "Token Listrik Fasilitas Bersama" },
+    { "id": "TX-004", "date": "2026-10-04", "type": "PENGELUARAN", "category": "Internet & Wifi", "amount": 350000, "description": "Langganan Indihome 100Mbps" },
+    { "id": "TX-005", "date": "2026-10-05", "type": "PENGELUARAN", "category": "Kebersihan & Air", "amount": 200000, "description": "Iuran Sampah & PDAM" }
+  ],
+  "bills": [
+    { "id": "INV-102", "roomId": "R02", "tenantName": "Bima Wicaksono", "tenantPhone": "6281987654321", "amount": 1500000, "month": "Oktober 2026", "status": "BELUM_LUNAS", "dueDate": "2026-10-05" },
+    { "id": "INV-202", "roomId": "R05", "tenantName": "Dian Kurniawan", "tenantPhone": "6287765432109", "amount": 1200000, "month": "Oktober 2026", "status": "MENUNGGU", "dueDate": "2026-10-20" },
+    { "id": "INV-101", "roomId": "R01", "tenantName": "Aditya Pratama", "tenantPhone": "6281234567890", "amount": 1500000, "month": "Oktober 2026", "status": "LUNAS", "dueDate": "2026-10-10" }
+  ]
+}
